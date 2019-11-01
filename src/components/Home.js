@@ -1,39 +1,46 @@
 import React, { Component } from "react";
-import "../styles/App.css";
+import Header from "./Header";
 
-class Dashboard extends Component {
+class MemeGenerator extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      topText: "",
+      bottomText: "",
+      randomImg: "http://i.imgflip.com/1bij.jpg",
+      allMemeImgs: []
+    };
   }
+
+  componentDidMount() {
+    fetch("https://api.imgflip.com/get_memes")
+      .then(response => response.json())
+      .then(response => {
+        const { memes } = response.data;
+        this.setState({ allMemeImgs: memes });
+      });
+  }
+
+  hanldeChange = event => {
+    this.setState({});
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+  };
+
   render() {
     return (
-      <div className="animate-opacity text-white">
-        <div className="display-middle">
-          <h1 className="jumbo animate-top">React Starter</h1>
-          <hr
-            className="border-grey"
-            style={{ margin: "auto", width: "40%" }}
-          />
-          <p className="large center">
-            Set up a modern web app easily.
-            <br />
-            <br />
-            <a
-              className="button"
-              href="https://github.com/mughalhere/react-starter-kit"
-            >
-              Documentation
-            </a>
-          </p>
-        </div>
-        <div className="display-bottomleft padding-large">
-          Powered by{" "}
-          <a href="https://github.com/mughalhere">
-            mughalhere
-          </a>
-        </div>
+      <div>
+        <Header />
+        <h1>MEME Generator Section</h1>
+        <form onSubmit={this.handleSubmit} className="meme-form">
+          <input type="text" />
+          <input type="text" />
+          <button>Gen</button>
+        </form>
       </div>
     );
   }
 }
-export default Dashboard;
+export default MemeGenerator;
